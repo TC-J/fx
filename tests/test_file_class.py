@@ -13,12 +13,15 @@ def test_file_create_and_delete():
     assert not os.path.exists(fname)
 
     f = file(fname)
+
     assert os.path.exists(fname)
 
     f.close()
+
     assert f.handle.closed
 
     f.remove()
+
     assert not os.path.exists(fname)
 
 
@@ -122,16 +125,20 @@ def test_file_lshift_ops():
     f.remove()
 
 
-def test_file_or_ops():
+def test_file_add_ops():
     f0 = file("a.txt")
+
     f0 << "a"
+
     f0 << "b"
 
     f1 = file("b.txt")
+
     f1 << "c"
+
     f1 << "d"
 
-    f0 | f1
+    f0 + f1
 
     assert f0[2] == f1[0]
 

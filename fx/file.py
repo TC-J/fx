@@ -1,4 +1,5 @@
 import os
+import difflib
 
 
 def touch(path):
@@ -121,9 +122,24 @@ class file:
 
         self[key] = value
 
-    def __lshift__(self, rhs):
-        self.append(rhs)
-
-    def __or__(self, rhs):
+    def appendf(self, rhs):
+        """
+        this appends the file on the right,
+        to this file.
+        """
         for l in rhs:
             self << l
+
+    def __lshift__(self, rhs: str):
+        """
+        -
+        this appends a string to the file.
+        """
+        self.append(rhs)
+
+    def __add__(self, rhs):
+        self.appendf(rhs)
+
+    # TODO: file::__sub__ => difflib
+    # TODO: file::__inv__ => SHA checksum
+    # TODO: file::__mod__ => regex substitution line by line
