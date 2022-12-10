@@ -181,6 +181,15 @@ class file:
 
         return self
 
+    def write(self, data: Sequence[AnyStr]) -> int:
+        return self.handle.write(data)
+
+    def writelines(self, data: List[AnyStr]) -> int:
+        self.handle.writelines(lines)
+
+    def diff(self, rhs):
+        return difflib.unified_diff(self.buffer, rhs.buffer)
+
     # TODO: file::__sub__ => file diff
     # TODO: file::__inv__ => SHA checksum
     # TODO: file::__mod__ => regex substitution line by line
