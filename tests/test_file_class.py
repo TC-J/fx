@@ -1,6 +1,8 @@
 from fx.file import file
 from fx.convenient import *
 
+import shutil
+
 import os
 
 
@@ -226,3 +228,65 @@ def test_cut():
     # check the file contents.
     with open("a.txt") as fh:
         assert fh.read() == "a\nc\n"
+
+
+def test_rename():
+    if os.path.exists("a.txt"):
+        os.remove("a.txt")
+
+    if os.path.exists("b.txt"):
+        os.remove("b.txt")
+
+    # create a new file
+    file("a.txt", "w+").close()
+
+    assert os.path.exists("a.txt")
+
+    # open the file.
+    f = file("./a.txt")
+
+    # rename the file.
+    f.rename("b.txt")
+
+    assert os.path.exists("b.txt")
+
+    assert not os.path.exists("a.txt")
+
+    # delete the file.
+    f.remove()
+
+    # close the file handler.
+    f.close()
+
+
+def test_move():
+    if os.path.exists("tmp.d"):
+        shutil.rmtree("tmp.d")
+
+    if os.path.exists("a.txt"):
+        os.remove("a.txt")
+
+    # create a file.
+    file("a.txt", "w+").close()
+
+    # open the file.
+    f = file("a.txt")
+
+    # move the file
+    f.move("tmp.d/a.txt")
+
+    assert os.path.exists("tmp.d/a.txt")
+
+    shutil.rmtree("tmp.d")
+
+
+def test_rshift_operator():
+    f = file("a.txt")
+
+    f >> "tmp.d/b.txt"
+
+    assert not os.path.exists("a.txt")
+
+    assert os.path.exists("tmp.d/b.txt")
+
+    shutil.rmtree("tmp.d")

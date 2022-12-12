@@ -1,6 +1,10 @@
 import os
 
+import pathlib
+
 import difflib
+
+import shutil
 
 from typing import *
 
@@ -189,6 +193,34 @@ class file:
 
     def diff(self, rhs):
         return difflib.unified_diff(self.buffer, rhs.buffer)
+
+    def rename(self, name: str):
+        """
+        -
+        rename the file.
+        """
+        os.rename(self.path, name)
+
+        self.path = (pathlib.Path(self.path).parent / name).as_posix()
+
+    def move(self, path):
+        """
+        -
+        move the file to a new location.
+        make all directories that do not
+        yet exist.
+        """
+        os.renames(self.path, path)
+        self.path = path
+
+    def __rshift__(self, rhs):
+        """
+        -
+        operator moves the file to a new
+        location; creating directories
+        if they do not exist.
+        """
+        self.move(rhs)
 
     # TODO: file::__sub__ => file diff
     # TODO: file::__inv__ => SHA checksum
